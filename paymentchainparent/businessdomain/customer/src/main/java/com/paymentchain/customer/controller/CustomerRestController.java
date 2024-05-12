@@ -29,13 +29,13 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/customer")
 public class CustomerRestController {
-    
+
     @Autowired
     CustomerRepository customerRepository;
 
     private final WebClient.Builder webClientBuilder;
 
-    public CustomerRestController(WebClient.Builder builder){
+    public CustomerRestController(WebClient.Builder builder) {
         this.webClientBuilder = builder;
     }
 
@@ -55,16 +55,16 @@ public class CustomerRestController {
     public List<Customer> list() {
         return customerRepository.findAll();
     }
-    
+
     @GetMapping("/{id}")
     public Customer get(@PathVariable(name = "id") long id) {
         return customerRepository.findById(id).get();
     }
-    
+
     @PutMapping("/{id}")
     public ResponseEntity<?> put(@PathVariable(name = "id") long id, @RequestBody Customer input) {
-         Customer find = customerRepository.findById(id).get();   
-        if(find != null){     
+        Customer find = customerRepository.findById(id).get();
+        if (find != null) {
             find.setCode(input.getCode());
             find.setName(input.getName());
             find.setIban(input.getIban());
@@ -72,45 +72,71 @@ public class CustomerRestController {
             find.setSurname(input.getSurname());
         }
         Customer save = customerRepository.save(find);
-           return ResponseEntity.ok(save);
+        return ResponseEntity.ok(save);
     }
-    
+
     @PostMapping
     public ResponseEntity<?> post(@RequestBody Customer input) {
         input.getProducts().forEach(x -> x.setCustomer(input));
         Customer save = customerRepository.save(input);
         return ResponseEntity.ok(save);
     }
-    @DeleteMapping("/{id}")   
+
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable(name = "id") long id) {
-          Optional<Customer> findById = customerRepository.findById(id);   
-        if(findById.get() != null){               
-                  customerRepository.delete(findById.get());  
+        Optional<Customer> findById = customerRepository.findById(id);
+        if (findById.get() != null) {
+            customerRepository.delete(findById.get());
         }
         return ResponseEntity.ok().build();
     }
 
-    private  String getProductName (Long id){
+    private String getProductName(Long id) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
                 .baseUrl("http://localhost:9091/product")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url","http://localhost:9091/product"))
+                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:9091/product"))
                 .build();
-        JsonNode block = build.method(HttpMethod.GET).uri("/"+id)
+        JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
                 .retrieve().bodyToMono(JsonNode.class).block();
         String nameProduct = block.get("name").asText();
         return nameProduct;
     }
 
+    private List<?> getTransactions(String iban) {
+        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
+                .baseUrl("http://localhost:9092/transactions")
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .build();
+
+        Optional<List<?>> transactionsOptional = Optional.ofNullable(build.method(HttpMethod.GET)
+                .uri(uriBuilder -> uriBuilder
+                        .path("/customer/transactions")
+                        .queryParam("ibanAccount", iban)
+                        .build())
+                .retrieve()
+                .bodyToFlux(Object.class)
+                .collectList()
+                .block());
+        return transactionsOptional.orElse(Collections.emptyList());
+    }
+
     @GetMapping("/full")
-    public Customer getCustomerFull(@RequestParam String code) {
+    public Customer getByCode(@RequestParam(name = "code") String code) {
         Customer customer = customerRepository.findByCode(code);
-        List<CustomerProduct> products = customer.getProducts();
-        products.forEach(x->{
-            String productName = getProductName(x.getId());
-            x.setProductName(productName);
-        });
+        if (customer != null) {
+            List<CustomerProduct> products = customer.getProducts();
+            //for each product find it name
+            products.forEach(x -> {
+                String productName = getProductName(x.getProductId());
+                x.setProductName(productName);
+            });
+            //find all transactions that belong this account number
+            List<?> transactions = getTransactions(customer.getIban());
+            customer.setTransactions(transactions);
+        }
         return customer;
     }
+
 
 }
