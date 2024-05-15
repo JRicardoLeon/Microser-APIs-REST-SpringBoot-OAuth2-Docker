@@ -7,12 +7,10 @@ springdoc:
    enabled: false
 
 spring:
-  profiles:
-    active: prod
   jpa:
     show-sql: true
   datasource:
-    url: jdbc:h2:men:product
+    url: jdbc:h2:mem:product
     username: sa
     password: 123456
   h2:

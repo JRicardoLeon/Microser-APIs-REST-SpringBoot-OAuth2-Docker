@@ -1,18 +1,16 @@
 server:
   port: 9090
-# swagger-ui custom path
+
 springdoc:
   swagger-ui:
-   path: /swagger.html
-   enabled: false
+    path: /swagger.html
+    enabled: false
 
 spring:
-  profiles:
-    active: prod
   jpa:
     show-sql: true
   datasource:
-    url: jdbc:h2:men:customer
+    url: jdbc:h2:mem:customer
     username: sa
     password: 123456
   h2:
