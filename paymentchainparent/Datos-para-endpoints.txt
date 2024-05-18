@@ -1,0 +1,77 @@
+Datod para crear un customer
+-------------------------------------
+{
+  "code": "01",
+  "name": "Ricardo",
+  "phone": "11111",
+  "iban": "0000",
+  "surname": "rick",
+  "address": "ricar@gmil.com",
+  "products": [
+    {
+      "productId": 1,
+      "productName": "string"
+    },
+    {
+      "productId": 2,
+      "productName": "string"
+    }
+  ],
+  "transactions": [
+    {}
+  ]
+}
+-------------------
+Datos para crear Productos
+---------------------------
+  {
+    "id": 1,
+    "code": "01",
+    "name": "Cuenta de Ahorros"
+  },
+  {
+    "id": 2,
+    "code": "02",
+    "name": "Tarjeta de Credito"
+  },
+  {
+    "id": 3,
+    "code": "03",
+    "name": "Cuenta Corriente"
+  }
+----------------------------
+Transactions
+{
+  "reference": "abc",
+  "accountIban": "123",
+  "dataTime": "2024-05-09T23:48:51.653Z",
+  "amount": 1000,
+  "fee": 0,
+  "description": "string",
+  "status": "string",
+  "channel": "WEB"
+}
+-----------------------------
+git restore .idea/sonarlint/issuestore/index.pb .idea/encodings.xml .idea/sonarlint/securityhotspotstore/index.pb .idea/workspace.xml .idea/misc.xml
+
+{
+          "name": "java",
+          "type": "binary",
+          "version": "17.0.8.1+1",
+          "id": "CVE-2024-20919",
+          "source": "https://nvd.nist.gov/vuln/detail/CVE-2024-20919",
+          "severity": "Medium",
+          "fix": "unknown",
+          "locations": [
+            "/opt/java/openjdk/bin/java"
+          ],
+          "cvssSummaries": [
+            {
+              "cvssVersion": "3.1",
+              "cvssAttackVector": "N",
+              "cvssAttackComplexity": "H",
+              "cvssAvailabilityImpact": "N"
+            }
+          ],
+          "relatedVulnerabilities": []
+        }
