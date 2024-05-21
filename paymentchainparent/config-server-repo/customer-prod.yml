@@ -1,5 +1,5 @@
 server:
-  port: 9091
+  port: 9090
 
 springdoc:
   swagger-ui:
@@ -7,6 +7,8 @@ springdoc:
     enabled: false
 
 spring:
+  application:
+    name: customer
   jpa:
     show-sql: true
   datasource:

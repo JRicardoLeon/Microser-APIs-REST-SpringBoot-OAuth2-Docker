@@ -6,7 +6,7 @@ springdoc:
     enabled: true
 spring:
   application:
-    name: transac
+    name: transaction
   jpa:
     show-sql: true
   datasource:
