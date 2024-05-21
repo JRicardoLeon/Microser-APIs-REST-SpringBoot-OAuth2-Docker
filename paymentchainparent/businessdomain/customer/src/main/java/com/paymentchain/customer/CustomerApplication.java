@@ -16,7 +16,7 @@ public class CustomerApplication {
 
 	@Bean
 	@LoadBalanced
-     public WebClient.Builder loaBalanceWebClientBuiler(){
+	public WebClient.Builder loadBalancedWebClientBuilder() {
 		return WebClient.builder();
-	 }
+	}
 }
