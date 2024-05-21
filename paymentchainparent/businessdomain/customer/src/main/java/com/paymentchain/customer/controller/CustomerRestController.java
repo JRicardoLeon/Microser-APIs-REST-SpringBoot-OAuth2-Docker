@@ -34,11 +34,12 @@ public class CustomerRestController {
     @Autowired
     CustomerRepository customerRepository;
 
-    private final WebClient.Builder webClientBuilder;
+    @Autowired
+    private WebClient.Builder webClientBuilder;
 
-    public CustomerRestController(WebClient.Builder builder) {
+   /* public CustomerRestController(WebClient.Builder builder) {
         this.webClientBuilder = builder;
-    }
+    }*/
 
 
     HttpClient client = HttpClient.create()// Client configuration for connection.
@@ -99,9 +100,9 @@ public class CustomerRestController {
 
     private String getProductName(Long id) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://localhost:9091/product")
+                .baseUrl("http://product/product")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:9091/product"))
+                .defaultUriVariables(Collections.singletonMap("url", "http://product/product"))
                 .build();
         JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
                 .retrieve().bodyToMono(JsonNode.class).block();
@@ -111,7 +112,7 @@ public class CustomerRestController {
 
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://localhost:9092/transactions")
+                .baseUrl("http://transaction/transactions")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
