@@ -12,7 +12,7 @@
     <artifactId>infraestructuradomain</artifactId>
     <packaging>pom</packaging>
     <modules>
-        <module>configServer</module>
+        <module>configserver</module>
     </modules>
 
    <properties>
