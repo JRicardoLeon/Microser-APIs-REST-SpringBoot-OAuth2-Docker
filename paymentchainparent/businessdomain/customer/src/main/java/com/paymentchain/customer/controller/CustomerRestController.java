@@ -37,11 +37,6 @@ public class CustomerRestController {
     @Autowired
     private WebClient.Builder webClientBuilder;
 
-   /* public CustomerRestController(WebClient.Builder builder) {
-        this.webClientBuilder = builder;
-    }*/
-
-
     HttpClient client = HttpClient.create()// Client configuration for connection.
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000) // Maximum time to establish connection with the server.
             .option(ChannelOption.SO_KEEPALIVE, true) // Mechanism to validate if the TCP connection is inactive.
@@ -99,20 +94,20 @@ public class CustomerRestController {
     }
 
     private String getProductName(Long id) {
-        WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://BUSINESSDOMAIN-PRODUCT/product")
+        WebClient webClient = webClientBuilder
+                .baseUrl("http://localhost:9094/product")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", "http://BUSINESSDOMAIN-PRODUCT/product"))
+                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:9094/product"))
+
                 .build();
-        JsonNode block = build.method(HttpMethod.GET).uri("/" + id)
+        JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
                 .retrieve().bodyToMono(JsonNode.class).block();
-        String nameProduct = block.get("name").asText();
-        return nameProduct;
+        return block.get("name").asText();
     }
 
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://BUSINESSDOMAIN-TRANSACTION/transactions")
+                .baseUrl("http://localhost:9095/transaction")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
