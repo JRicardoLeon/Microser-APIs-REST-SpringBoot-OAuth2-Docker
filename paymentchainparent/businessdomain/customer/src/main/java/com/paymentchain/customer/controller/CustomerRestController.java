@@ -98,7 +98,7 @@ public class CustomerRestController {
 
     private String getProductName(Long id) {
         WebClient webClient = webClientBuilder
-                .baseUrl("http://BUSINESSDOMAIN-PRODUCT") // Usar el nombre del servicio registrado en Eureka
+                .baseUrl("http://BUSINESSDOMAIN-PRODUCT/product") // Usar el nombre del servicio registrado en Eureka
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
@@ -113,7 +113,7 @@ public class CustomerRestController {
 
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://localhost:9095/transaction")
+                .baseUrl("http://BUSINESSDOMAIN-TRANSACTION/transactions")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 

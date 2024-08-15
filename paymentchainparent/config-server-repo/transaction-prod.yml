@@ -5,6 +5,9 @@ springdoc:
     path: /swagger.html
     enabled: false
 spring:
+  cloud:
+    config:
+      enabled: true
   application:
     name: businessdomain-transaction
   jpa:
