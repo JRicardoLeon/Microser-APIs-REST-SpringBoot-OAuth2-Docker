@@ -1,17 +1,15 @@
 server:
-  port: 9090
-
+  port: 9091
 springdoc:
   swagger-ui:
     path: /swagger.html
     enabled: false
-
 spring:
   cloud:
     config:
       enabled: true
   application:
-    name: customer
+    name: businessdomain-product
   jpa:
     show-sql: true
   datasource:
@@ -22,7 +20,18 @@ spring:
   h2:
     console:
       enabled: true
-
 custom:
   activeprofileName: Production Profile
-
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+    register-with-eureka: true
+    healthcheck:
+      enabled: true
+    fetch-registry: true
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

@@ -13,13 +13,14 @@
     <packaging>pom</packaging>
     <modules>
         <module>configserver</module>
+        <module>eurekaServer</module>
     </modules>
 
    <properties>
        <spring-cloud-dependencies.version>2023.0.1</spring-cloud-dependencies.version>
     </properties>
     
-     <!--Allows consolidate and centralized management of deendency version witout adding dependencies
+     <!--Allows to consolidate and centralized management of deendency version witout adding dependencies
     that are inherit by all children, it is useesfull whe we have a set of porjects that inherit a common parent.-->
     <dependencyManagement>
         <dependencies>

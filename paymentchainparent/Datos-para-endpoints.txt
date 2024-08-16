@@ -43,7 +43,7 @@ Datos para crear Productos
 Transactions
 {
   "reference": "abc",
-  "accountIban": "123",
+  "accountIban": "0000",
   "dataTime": "2024-05-09T23:48:51.653Z",
   "amount": 1000,
   "fee": 0,
