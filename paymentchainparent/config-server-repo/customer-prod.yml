@@ -7,6 +7,9 @@ springdoc:
     enabled: false
 
 spring:
+  cloud:
+    config:
+      enabled: true
   application:
     name: customer
   jpa:

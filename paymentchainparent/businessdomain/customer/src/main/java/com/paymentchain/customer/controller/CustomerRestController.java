@@ -34,8 +34,11 @@ public class CustomerRestController {
     @Autowired
     CustomerRepository customerRepository;
 
-    @Autowired
-    private WebClient.Builder webClientBuilder;
+    private final WebClient.Builder webClientBuilder;
+
+    public CustomerRestController(WebClient.Builder webClientBuilder) {
+        this.webClientBuilder = webClientBuilder;
+    }
 
     HttpClient client = HttpClient.create()// Client configuration for connection.
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 5000) // Maximum time to establish connection with the server.
@@ -95,19 +98,22 @@ public class CustomerRestController {
 
     private String getProductName(Long id) {
         WebClient webClient = webClientBuilder
-                .baseUrl("http://localhost:9094/product")
+                .baseUrl("http://BUSINESSDOMAIN-PRODUCT/product") // Usar el nombre del servicio registrado en Eureka
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultUriVariables(Collections.singletonMap("url", "http://localhost:9094/product"))
-
                 .build();
-        JsonNode block = webClient.method(HttpMethod.GET).uri("/" + id)
-                .retrieve().bodyToMono(JsonNode.class).block();
+
+        JsonNode block = webClient.method(HttpMethod.GET)
+                .uri("/" + id)
+                .retrieve()
+                .bodyToMono(JsonNode.class)
+                .block();
+
         return block.get("name").asText();
     }
 
     private List<?> getTransactions(String iban) {
         WebClient build = webClientBuilder.clientConnector(new ReactorClientHttpConnector(client))
-                .baseUrl("http://localhost:9095/transaction")
+                .baseUrl("http://BUSINESSDOMAIN-TRANSACTION/transactions")
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
 
